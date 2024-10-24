@@ -20,6 +20,8 @@ import logging
 
 def GetDataSelenium2Html(url):
     firefox_options = Options()
+    firefox_options.set_preference('marionette.port', 2828)
+
     # firefox_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     firefox_options.add_argument("--lang=vi")
     # firefox_options.add_argument("--remote-debugging-port=0")
