@@ -20,7 +20,7 @@ import logging
 
 def GetDataSelenium2Html(url):
     firefox_options = Options()
-    firefox_options.set_preference('marionette.port', 2828)
+    firefox_options.set_preference('marionette.port', 0)
 
     # firefox_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     firefox_options.add_argument("--lang=vi")
@@ -36,7 +36,17 @@ def GetDataSelenium2Html(url):
         log_path = '/dev/null'
     
     service = Service(log_path=log_path)
-    driver = webdriver.Firefox(service = service, options=firefox_options)
+    # driver = webdriver.Firefox(service = service, options=firefox_options)
+    for attempt in range(3):  # Retry up to 3 times
+        try:
+            driver = webdriver.Firefox(service=service, options=firefox_options)
+            break
+        except Exception as e:
+            logging.error(f"Attempt {attempt + 1} failed: {e}")
+            time.sleep(5)
+    else:
+        raise Exception("Failed to initialize Firefox after 3 attempts")
+
     driver.get(url=url)
 
     driver.maximize_window()
