@@ -184,7 +184,7 @@ def run_scraping():
     df = pd.read_csv('/opt/airflow/dags/data/datalink/list_maps.csv')
     list_url = df['link_maps'].tolist()
     
-    data_file_path = '/opt/airflow/dags/data/data.json'
+    data_file_path = '/opt/airflow/dags/data/datas1.json'
     os.makedirs('/opt/airflow/dags/data/', exist_ok=True)
 
     if not os.path.exists(data_file_path):
