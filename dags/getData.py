@@ -178,22 +178,21 @@ def process_url(url, data_file_path, lock):
     except Exception as e:
         logging.error(f'Error processing {url}: {e}')
 
-if __name__ == '__main__':
-    
+def run_scraping():
     logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S', filename='./loggs/app.log', filemode='a')
     
-    df = pd.read_csv('data/datalink/list_maps.csv')
+    df = pd.read_csv('/opt/airflow/dags/data/datalink/list_maps.csv')
     list_url = df['link_maps'].tolist()
     
-    data_file_path = '/home/tky/ky_ws/review/data/data.json'
-    os.makedirs('/home/tky/ky_ws/review/data/', exist_ok=True)
+    data_file_path = '/opt/airflow/dags/data/data.json'
+    os.makedirs('/opt/airflow/dags/data/', exist_ok=True)
 
     if not os.path.exists(data_file_path):
         with open(data_file_path, 'w', encoding='utf-8-sig') as f:
             json.dump([], f, ensure_ascii=False, indent=4)
 
     lock = threading.Lock()
-    max_workers = 50 
+    max_workers = 10 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = [executor.submit(process_url, url, data_file_path, lock) for url in list_url]
         for future in futures:

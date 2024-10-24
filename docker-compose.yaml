@@ -147,6 +147,9 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+    environment:
+      <<: *airflow-common-env
+      _PIP_ADDITIONAL_REQUIREMENTS: "openpyxl requests beautifulsoup4 fake-useragent selenium requests-html lxml_html_clean speedtest-cli crontab"
     restart: always
     depends_on:
       <<: *airflow-common-depends-on
