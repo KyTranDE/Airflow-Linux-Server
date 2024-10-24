@@ -4,16 +4,18 @@ from airflow import DAG
 from airflow.decorators import task
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-from getData
+from getData import run_scraping
 
-# A DAG represents a workflow, a collection of tasks
-with DAG(dag_id="demo", start_date=datetime(2022, 1, 1), schedule="0 0 * * *") as dag:
-    # Tasks are represented as operators
-    hello = BashOperator(task_id="hello", bash_command="echo hello")
+with DAG(
+    dag_id="data_scraping_dag",
+    start_date=datetime(2024, 1, 1),
+    schedule_interval="*/20 * * * *",  # Run every 20 minutes
+    catchup=False  # Do not catch up on missed runs
+) as dag:
+    # Define the scraping task
+    scrape_data_task = PythonOperator(
+        task_id="scrape_data",
+        python_callable=run_scraping,  # Call the scraping function
+    )
 
-    @task()
-    def airflow():
-        print("airflow")
-
-    # Set dependencies between tasks
-    hello >> airflow()
+    scrape_data_task
