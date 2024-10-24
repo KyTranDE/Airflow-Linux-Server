@@ -191,7 +191,9 @@ def process_url(url, data_file_path, lock):
         logging.error(f'Error processing {url}: {e}')
 
 def run_scraping():
-    logging.basicConfig(level=logging.DEBUG,format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S', filename='./loggs/app.log', filemode='a')
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', 
+                    datefmt='%Y-%m-%d %H:%M:%S', handlers=[logging.FileHandler('/opt/airflow/dags/loggs/app.log', mode='a'), logging.StreamHandler()])
+
     
     df = pd.read_csv('/opt/airflow/dags/data/datalink/list_maps.csv')
     list_url = df['link_maps'].tolist()
