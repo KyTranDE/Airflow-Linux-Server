@@ -20,6 +20,8 @@ import logging
 
 def GetDataSelenium2Html(url):
     firefox_options = Options()
+    firefox_options.set_preference('marionette.port', 2828)
+
     # firefox_options.add_experimental_option('excludeSwitches', ['enable-logging'])
     firefox_options.add_argument("--lang=vi")
     # firefox_options.add_argument("--remote-debugging-port=0")
@@ -184,7 +186,7 @@ def run_scraping():
     df = pd.read_csv('/opt/airflow/dags/data/datalink/list_maps.csv')
     list_url = df['link_maps'].tolist()
     
-    data_file_path = '/opt/airflow/dags/data/data.json'
+    data_file_path = '/opt/airflow/dags/data/datas1.json'
     os.makedirs('/opt/airflow/dags/data/', exist_ok=True)
 
     if not os.path.exists(data_file_path):
